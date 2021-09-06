@@ -34,4 +34,8 @@ public class SortingsTest {
     public void insertionSortTest(){
         Assert.assertArrayEquals(Sortings.insertionSort(testedArr), sortedArr);
     }
+    @Test
+    public void mergingSortTest(){
+        Assert.assertArrayEquals(Sortings.mergingSort(testedArr), sortedArr);
+    }
 }
