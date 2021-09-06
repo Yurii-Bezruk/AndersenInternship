@@ -23,8 +23,11 @@ public class SortingsTest {
     }
 
     @Test
-    public void bubbleSortAverageCaseTests(){
-        System.out.println(testedArr.length);
+    public void bubbleSortTest(){
         Assert.assertArrayEquals(Sortings.bubbleSort(testedArr), sortedArr);
+    }
+    @Test
+    public void selectionSortTest(){
+        Assert.assertArrayEquals(Sortings.selectionSort(testedArr), sortedArr);
     }
 }
