@@ -16,12 +16,11 @@ public class SortingsTest {
         Random random = new Random(System.currentTimeMillis());
         testedArr = new Integer[random.nextInt(90) + 10];
         for (int i = 0; i < testedArr.length; i++) {
-            testedArr[i] = random.nextInt();
+            testedArr[i] = random.nextInt(1000);
         }
         sortedArr = Arrays.copyOf(testedArr, testedArr.length);
         Arrays.sort(sortedArr);
     }
-
     @Test
     public void bubbleSortTest(){
         Assert.assertArrayEquals(Sortings.bubbleSort(testedArr), sortedArr);
@@ -37,5 +36,9 @@ public class SortingsTest {
     @Test
     public void mergingSortTest(){
         Assert.assertArrayEquals(Sortings.mergingSort(testedArr), sortedArr);
+    }
+    @Test
+    public void quickSortTest(){
+        Assert.assertArrayEquals(Sortings.quickSort(testedArr), sortedArr);
     }
 }

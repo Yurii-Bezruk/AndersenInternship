@@ -3,8 +3,6 @@ package striker.studing;
 import java.util.Arrays;
 
 public final class Sortings {
-    private Sortings(){}
-
     public static <T extends Comparable<T>> T[] bubbleSort(T[] arr){
         boolean swapped = true;
         while (swapped) {
@@ -70,7 +68,36 @@ public final class Sortings {
         }
         return merged;
     }
-
+    public static <T extends Comparable<T>> T[] quickSort(T[] arr) {
+        return recursiveQuickSort(arr, 0, arr.length - 1);
+    }
+    private static <T extends Comparable<T>> T[] recursiveQuickSort(T[] arr, int start, int end) {
+        if (arr.length == 0)
+            return arr;
+        if (start >= end)
+            return arr;
+        int middle = start + (end - start) / 2;
+        T support = arr[middle];
+        int i = start, j = end;
+        while (i <= j) {
+            while (arr[i].compareTo(support) < 0) {
+                i++;
+            }
+            while (arr[j].compareTo(support) > 0) {
+                j--;
+            }
+            if (i <= j) {
+                swap(arr, i, j);
+                i++;
+                j--;
+            }
+        }
+        if (start < j)
+            recursiveQuickSort(arr, start, j);
+        if (end > i)
+            recursiveQuickSort(arr, i, end);
+        return arr;
+    }
     private static <T extends Comparable<T>> void swap(T[] arr, int firstIndex, int secondIndex){
         T temp = arr[firstIndex];
         arr[firstIndex] = arr[secondIndex];
