@@ -28,6 +28,17 @@ public final class Sortings {
         }
         return arr;
     }
+    public static <T extends Comparable<T>> T[] insertionSort(T[] arr){
+        for (int i = 0; i < arr.length; i++) {
+            T cursor = arr[i];
+            int position;
+            for (position = i; (position > 0) && (arr[position - 1].compareTo(cursor) > 0); position--) {
+                arr[position] = arr[position - 1];
+            }
+            arr[position] = cursor;
+        }
+        return arr;
+    }
 
     private static <T extends Comparable<T>> void swap(T[] arr, int firstIndex, int secondIndex){
         T temp = arr[firstIndex];

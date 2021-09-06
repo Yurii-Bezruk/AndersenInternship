@@ -30,4 +30,8 @@ public class SortingsTest {
     public void selectionSortTest(){
         Assert.assertArrayEquals(Sortings.selectionSort(testedArr), sortedArr);
     }
+    @Test
+    public void insertionSortTest(){
+        Assert.assertArrayEquals(Sortings.insertionSort(testedArr), sortedArr);
+    }
 }
