@@ -1,4 +1,4 @@
-package striker.studing;
+package striker.studing.sortings;
 
 import java.util.Arrays;
 

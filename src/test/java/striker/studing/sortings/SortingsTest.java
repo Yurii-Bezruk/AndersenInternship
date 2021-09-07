@@ -1,8 +1,9 @@
-package striker.studing;
+package striker.studing.sortings;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import striker.studing.sortings.Sortings;
 
 import java.util.Arrays;
 import java.util.Random;
