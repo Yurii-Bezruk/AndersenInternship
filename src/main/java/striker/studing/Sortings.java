@@ -3,6 +3,8 @@ package striker.studing;
 import java.util.Arrays;
 
 public final class Sortings {
+    private Sortings(){}
+
     public static <T extends Comparable<T>> T[] bubbleSort(T[] arr){
         boolean swapped = true;
         while (swapped) {
@@ -73,8 +75,6 @@ public final class Sortings {
     }
     private static <T extends Comparable<T>> T[] recursiveQuickSort(T[] arr, int start, int end) {
         if (arr.length == 0)
-            return arr;
-        if (start >= end)
             return arr;
         int middle = start + (end - start) / 2;
         T support = arr[middle];

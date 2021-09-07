@@ -26,19 +26,44 @@ public class SortingsTest {
         Assert.assertArrayEquals(Sortings.bubbleSort(testedArr), sortedArr);
     }
     @Test
+    public void bubbleSortTestEmptyArray(){
+        Integer[] arr = new Integer[0];
+        Assert.assertArrayEquals(Sortings.bubbleSort(arr), arr);
+    }
+    @Test
     public void selectionSortTest(){
         Assert.assertArrayEquals(Sortings.selectionSort(testedArr), sortedArr);
+    }
+    @Test
+    public void selectionSortTestEmptyArray(){
+        Integer[] arr = new Integer[0];
+        Assert.assertArrayEquals(Sortings.selectionSort(arr), arr);
     }
     @Test
     public void insertionSortTest(){
         Assert.assertArrayEquals(Sortings.insertionSort(testedArr), sortedArr);
     }
     @Test
+    public void insertionSortTestEmptyArray(){
+        Integer[] arr = new Integer[0];
+        Assert.assertArrayEquals(Sortings.insertionSort(arr), arr);
+    }
+    @Test
     public void mergingSortTest(){
         Assert.assertArrayEquals(Sortings.mergingSort(testedArr), sortedArr);
     }
     @Test
+    public void mergingSortTestEmptyArray(){
+        Integer[] arr = new Integer[0];
+        Assert.assertArrayEquals(Sortings.mergingSort(arr), arr);
+    }
+    @Test
     public void quickSortTest(){
         Assert.assertArrayEquals(Sortings.quickSort(testedArr), sortedArr);
+    }
+    @Test
+    public void quickSortTestEmptyArray(){
+        Integer[] arr = new Integer[0];
+        Assert.assertArrayEquals(Sortings.quickSort(arr), arr);
     }
 }
