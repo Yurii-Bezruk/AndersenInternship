@@ -109,23 +109,49 @@ public class ArrayList<E> implements List<E> {
     }
 
     @Override
-    public boolean addAll(int index, Collection<? extends E> c) {
-        return false;
+    public boolean addAll(int index, Collection<? extends E> collection) {
+        for (E element : collection) {
+            add(index, element);
+        }
+        return true;
     }
 
     @Override
-    public boolean removeAll(Collection<?> c) {
-        return false;
+    public boolean removeAll(Collection<?> collection) {
+        boolean removed = false;
+        for (Object element : collection) {
+            if (remove(element)){
+                removed = true;
+            }
+        }
+        return removed;
     }
 
     @Override
-    public boolean retainAll(Collection<?> c) {
-        return false;
+    public boolean retainAll(Collection<?> collection) {
+        ArrayList<Integer> indexes = new ArrayList<>();
+        for (Object elem : collection) {
+            int index = indexOf(elem);
+            if (index != -1){
+                indexes.add(index);
+            }
+        }
+        if(indexes.size == 0)
+            return false;
+        for (int i = 0; i < size; i++) {
+            if (! indexes.contains(i)){
+                remove(i);
+            }
+        }
+        return true;
     }
 
     @Override
     public void clear() {
-
+        for (int i = 0; i < size; i++) {
+            array[i] = null;
+        }
+        size = 0;
     }
 
     @Override
@@ -197,6 +223,9 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
-        return null;
+        ArrayList<E> subList = new ArrayList<>(0);
+        subList.array = Arrays.copyOfRange(array, fromIndex, toIndex);
+        subList.size = subList.array.length;
+        return subList;
     }
 }

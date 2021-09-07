@@ -195,6 +195,17 @@ public class ArrayListTest {
         Assert.assertTrue(list.containsAll(col));
     }
     @Test
+    public void addAllTestWithIndex() {
+        Collection<Integer> col = new HashSet<>();
+        col.add(1);
+        col.add(2);
+        col.add(3);
+        List<Integer> list = new ArrayList<>();
+        list.add(-4);
+        list.addAll(0, col);
+        Assert.assertTrue(list.containsAll(col));
+    }
+    @Test
     public void getTest() {
         List<String> list = new ArrayList<>();
         String testString = "test";
@@ -229,6 +240,82 @@ public class ArrayListTest {
     public void addTestIfIndexOutOfBounds() {
         List<String> list = new ArrayList<>();
         list.add(0, "another");
+    }
+    @Test
+    public void removeAllTest() {
+        Collection<Integer> col = new HashSet<>();
+        col.add(1);
+        col.add(2);
+        col.add(3);
+        List<Integer> list = new ArrayList<>();
+        list.addAll(col);
+        Assert.assertTrue(list.removeAll(col));
+        Assert.assertEquals(0, list.size());
+    }
+    @Test
+    public void removeAllIfNotContainsTest() {
+        Collection<Integer> col = new HashSet<>();
+        col.add(1);
+        col.add(2);
+        col.add(3);
+        List<Integer> list = new ArrayList<>();
+        list.add(5);
+        list.add(6);
+        list.add(7);
+        int expectedSize = list.size();
+        Assert.assertFalse(list.removeAll(col));
+        Assert.assertEquals(expectedSize, list.size());
+    }
+    @Test
+    public void retainAllTest() {
+        Collection<Integer> col = new HashSet<>();
+        col.add(1);
+        col.add(2);
+        col.add(3);
+        List<Integer> list = new ArrayList<>();
+        list.addAll(col);
+        list.add(3);
+        Assert.assertTrue(list.retainAll(col));
+        Assert.assertEquals(list.size(), col.size());
+        Assert.assertTrue(list.containsAll(col));
+    }
+    @Test
+    public void retainAllIfNotContainsTest() {
+        Collection<Integer> col = new HashSet<>();
+        col.add(1);
+        col.add(2);
+        col.add(3);
+        List<Integer> list = new ArrayList<>();
+        list.add(5);
+        list.add(6);
+        list.add(7);
+        int expectedSize = list.size();
+        Assert.assertFalse(list.retainAll(col));
+        Assert.assertEquals(expectedSize, list.size());
+    }
+    @Test
+    public void clearTest() {
+        List<Integer> list = new ArrayList<>();
+        list.add(2);
+        list.add(6);
+        list.add(3);
+        int expectedSize = 0;
+        list.clear();
+        Assert.assertEquals(expectedSize, list.size());
+    }
+    @Test
+    public void subListTest() {
+        List<String> list = new ArrayList<>();
+        String testSrt1 = "test1";
+        String testSrt2 = "test2";
+        String testSrt3 = "test3";
+        list.add(testSrt1);
+        list.add(testSrt2);
+        list.add(testSrt3);
+        List<String> subList = list.subList(0, 2);
+        Assert.assertEquals(2, subList.size());
+        Assert.assertEquals(testSrt1, subList.get(0));
+        Assert.assertEquals(testSrt2, subList.get(1));
     }
     private int getListCapacity(List<?> list) throws NoSuchFieldException, IllegalAccessException {
         Field field = list.getClass().getDeclaredField("array");
