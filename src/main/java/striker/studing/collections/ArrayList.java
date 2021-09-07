@@ -92,12 +92,20 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        return false;
+        for (Object o : c){
+            if (! contains(o)){
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
-    public boolean addAll(Collection<? extends E> c) {
-        return false;
+    public boolean addAll(Collection<? extends E> collection) {
+        for (E elem : collection) {
+            add(elem);
+        }
+        return true;
     }
 
     @Override
@@ -121,8 +129,11 @@ public class ArrayList<E> implements List<E> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public E get(int index) {
-        return null;
+        if (index >= size)
+            throw new ArrayIndexOutOfBoundsException();
+        return (E) array[index];
     }
 
     @Override

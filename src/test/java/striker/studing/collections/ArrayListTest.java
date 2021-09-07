@@ -161,6 +161,51 @@ public class ArrayListTest {
         list.add(1);
         Assert.assertEquals(-1, list.lastIndexOf(3));
     }
+    @Test
+    public void containsAllTest() {
+        Collection<Integer> col = new HashSet<>();
+        col.add(1);
+        col.add(2);
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(1);
+        Assert.assertTrue(list.containsAll(col));
+    }
+    @Test
+    public void containsAllTestIfNotContains() {
+        Collection<Integer> col = new HashSet<>();
+        col.add(1);
+        col.add(2);
+        col.add(3);
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(1);
+        Assert.assertFalse(list.containsAll(col));
+    }
+    @Test
+    public void addAllTest() {
+        Collection<Integer> col = new HashSet<>();
+        col.add(1);
+        col.add(2);
+        col.add(3);
+        List<Integer> list = new ArrayList<>();
+        list.addAll(col);
+        Assert.assertTrue(list.containsAll(col));
+    }
+    @Test
+    public void getTest() {
+        List<String> list = new ArrayList<>();
+        String testString = "test";
+        list.add(testString);
+        Assert.assertEquals(testString, list.get(0));
+    }
+    @Test(expected = ArrayIndexOutOfBoundsException.class)
+    public void getTestIfIndexOutOfBounds() {
+        List<String> list = new ArrayList<>();
+        list.get(0);
+    }
     private int getListCapacity(List<?> list) throws NoSuchFieldException, IllegalAccessException {
         Field field = list.getClass().getDeclaredField("array");
         field.setAccessible(true);
