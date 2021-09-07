@@ -206,6 +206,30 @@ public class ArrayListTest {
         List<String> list = new ArrayList<>();
         list.get(0);
     }
+    @Test
+    public void setTest() {
+        List<String> list = new ArrayList<>();
+        String testString = "test";
+        list.add(testString);
+        String another = "t";
+        list.set(0, another);
+        Assert.assertEquals(another, list.get(0));
+    }
+    @Test
+    public void addByIndexTest() {
+        List<String> list = new ArrayList<>();
+        String testString = "test";
+        list.add(testString);
+        String another = "t";
+        list.add(0, another);
+        Assert.assertEquals(another, list.get(0));
+        Assert.assertEquals(testString, list.get(1));
+    }
+    @Test(expected = ArrayIndexOutOfBoundsException.class)
+    public void addTestIfIndexOutOfBounds() {
+        List<String> list = new ArrayList<>();
+        list.add(0, "another");
+    }
     private int getListCapacity(List<?> list) throws NoSuchFieldException, IllegalAccessException {
         Field field = list.getClass().getDeclaredField("array");
         field.setAccessible(true);

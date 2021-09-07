@@ -138,12 +138,20 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public E set(int index, E element) {
-        return null;
+        E old = get(index);
+        array[index] = element;
+        return old;
     }
 
     @Override
     public void add(int index, E element) {
-
+        if (index >= size)
+            throw new ArrayIndexOutOfBoundsException();
+        ensureCapacity(size + 1);
+        int numMoved = size - index;
+        System.arraycopy(array, index, array, index + 1, numMoved);
+        array[index] = element;
+        size++;
     }
 
     @Override
