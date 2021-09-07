@@ -34,9 +34,12 @@ public class ArrayList<E> implements List<E> {
         return size == 0;
     }
 
-    //TODO
     @Override
     public boolean contains(Object o) {
+        for (int i = 0; i < size; i++) {
+            if (array[i].equals(o))
+                return true;
+        }
         return false;
     }
 
@@ -49,13 +52,17 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public Object[] toArray() {
-        return Arrays.copyOf(array, array.length);
+        return Arrays.copyOf(array, size);
     }
 
-    //TODO
     @Override
-    public <T> T[] toArray(T[] a) {
-        return null;
+    @SuppressWarnings("unchecked")
+    public <T> T[] toArray(T[] arr) {
+        if(arr.length >= size){
+            System.arraycopy(array, 0, arr, 0, size);
+            return arr;
+        }
+        return (T[]) Arrays.copyOf(array, size);
     }
 
     @Override

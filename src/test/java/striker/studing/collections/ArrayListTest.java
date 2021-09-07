@@ -69,6 +69,36 @@ public class ArrayListTest {
         int actualCapacity = getListCapacity(list);
         Assert.assertNotEquals(expectedCapacity, actualCapacity);
     }
+    @Test
+    public void containsTest() throws NoSuchFieldException, IllegalAccessException {
+        int testElem = 6;
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(testElem);
+        Assert.assertTrue(list.contains(testElem));
+    }
+    @Test
+    public void notContainsTest() throws NoSuchFieldException, IllegalAccessException {
+        int testElem = 6;
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(testElem);
+        Assert.assertFalse(list.contains(1));
+    }
+    @Test
+    public void toArrayWithParameterTestIfEnoughSpace() {
+        String[] testArr = {"rtrt", "test", "string"};
+        List<String> collection = Stream.of(testArr).collect(Collectors.toList());
+        List<String> list = new ArrayList<>(collection);
+        String[] newArray = new String[5];
+        Assert.assertSame(newArray, list.toArray(newArray));
+    }
+    @Test
+    public void toArrayWithParameterTestIfNotEnoughSpace() {
+        String[] testArr = {"rtrt", "test", "string"};
+        List<String> collection = Stream.of(testArr).collect(Collectors.toList());
+        List<String> list = new ArrayList<>(collection);
+        String[] newArray = new String[2];
+        Assert.assertNotSame(newArray, list.toArray(newArray));
+    }
     private int getListCapacity(List<?> list) throws NoSuchFieldException, IllegalAccessException {
         Field field = list.getClass().getDeclaredField("array");
         field.setAccessible(true);
