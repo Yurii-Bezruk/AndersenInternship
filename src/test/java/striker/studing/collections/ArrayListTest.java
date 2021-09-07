@@ -99,6 +99,68 @@ public class ArrayListTest {
         String[] newArray = new String[2];
         Assert.assertNotSame(newArray, list.toArray(newArray));
     }
+    @Test
+    public void removeByIndexTest() {
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(4);
+        list.add(-9);
+        int startSize = list.size();
+        list.remove(1);
+        Assert.assertEquals(startSize - 1, list.size());
+        Assert.assertFalse(list.contains(4));
+    }
+    @Test(expected = ArrayIndexOutOfBoundsException.class)
+    public void removeByIndexTestIfIndexIsOutOfBounds() {
+        List<Integer> list = new ArrayList<>();
+        list.remove(0);
+    }
+    @Test
+    public void removeByObjectTest() {
+        List<String> list = new ArrayList<>();
+        String testString = "test";
+        list.add(testString);
+        int startSize = list.size();
+        Assert.assertTrue(list.remove(testString));
+        Assert.assertEquals(startSize - 1, list.size());
+    }
+    @Test
+    public void removeByObjectTestIfNotContainsElement() {
+        List<String> list = new ArrayList<>();
+        String testString = "test";
+        list.add(testString);
+        int startSize = list.size();
+        Assert.assertFalse(list.remove("another"));
+        Assert.assertNotEquals(startSize - 1, list.size());
+    }
+    @Test
+    public void indexOfTestIfContainsElement() {
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        Assert.assertEquals(0, list.indexOf(1));
+    }
+    @Test
+    public void indexOfTestIfNotContainsElement() {
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        Assert.assertEquals(-1, list.indexOf(2));
+    }
+    @Test
+    public void lastIndexOfTestIfContainsElement() {
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(1);
+        Assert.assertEquals(2, list.lastIndexOf(1));
+    }
+    @Test
+    public void lastIndexOfTestIfNotContainsElement() {
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(1);
+        Assert.assertEquals(-1, list.lastIndexOf(3));
+    }
     private int getListCapacity(List<?> list) throws NoSuchFieldException, IllegalAccessException {
         Field field = list.getClass().getDeclaredField("array");
         field.setAccessible(true);

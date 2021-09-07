@@ -83,7 +83,11 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public boolean remove(Object o) {
-        return false;
+        int index = indexOf(o);
+        if (index == -1)
+            return false;
+        remove(index);
+        return true;
     }
 
     @Override
@@ -132,18 +136,34 @@ public class ArrayList<E> implements List<E> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public E remove(int index) {
-        return null;
+        if(index >= size){
+            throw new ArrayIndexOutOfBoundsException();
+        }
+        int numMoved = size - index - 1;
+        E element = (E) array[index];
+        System.arraycopy(array, index + 1, array, index, numMoved);
+        array[--size] = null;
+        return element;
     }
 
     @Override
     public int indexOf(Object o) {
-        return 0;
+        for (int i = 0; i < size; i++) {
+            if (array[i].equals(o))
+                return i;
+        }
+        return -1;
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        return 0;
+        for (int i = size - 1; i >= 0; i--) {
+            if (array[i].equals(o))
+                return i;
+        }
+        return -1;
     }
 
     @Override
