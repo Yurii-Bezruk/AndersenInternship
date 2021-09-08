@@ -493,10 +493,18 @@ public class ArrayListTest {
         Assert.assertEquals(list, list.clone());
     }
     @Test
-    public void equalsTest() {
+    @SuppressWarnings("unchecked")
+    public void equalsTest() throws CloneNotSupportedException {
         ArrayList<String> list = new ArrayList<>();
         list.add("");
+        ArrayList<String> emptyList = new ArrayList<>();
+        ArrayList<String> anotherList = new ArrayList<>();
+        emptyList.add("another");
         Assert.assertTrue(list.equals(list));
+        Assert.assertFalse(list.equals(null));
+        Assert.assertFalse(list.equals(new String()));
+        Assert.assertFalse(list.equals(emptyList));
+        Assert.assertFalse(list.equals(anotherList));
     }
     @Test
     public void trimToSizeTest() throws NoSuchFieldException, IllegalAccessException {
