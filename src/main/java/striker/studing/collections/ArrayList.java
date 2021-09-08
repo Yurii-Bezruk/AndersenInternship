@@ -2,7 +2,7 @@ package striker.studing.collections;
 
 import java.util.*;
 
-public class ArrayList<E> implements List<E> {
+public class ArrayList<E> implements List<E>, Cloneable {
     private static final int DEFAULT_CAPACITY = 10;
 
     private Object[] array;
@@ -152,6 +152,26 @@ public class ArrayList<E> implements List<E> {
             array[i] = null;
         }
         size = 0;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    public void trimToSize() {
+        Object[] newArray = new Object[size];
+        System.arraycopy(array, 0, newArray, 0, size);
+        array = newArray;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ArrayList<?> list = (ArrayList<?>) o;
+        return size == list.size &&
+                Arrays.equals(array, list.array);
     }
 
     @Override

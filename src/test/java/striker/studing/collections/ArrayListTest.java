@@ -486,6 +486,25 @@ public class ArrayListTest {
         List<String> list = new ArrayList<>();
         list.listIterator().add("");
     }
+    @Test
+    public void cloneTest() throws CloneNotSupportedException {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("");
+        Assert.assertEquals(list, list.clone());
+    }
+    @Test
+    public void equalsTest() {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("");
+        Assert.assertTrue(list.equals(list));
+    }
+    @Test
+    public void trimToSizeTest() throws NoSuchFieldException, IllegalAccessException {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("");
+        list.trimToSize();
+        Assert.assertEquals(getListCapacity(list), list.size());
+    }
     private int getListCapacity(List<?> list) throws NoSuchFieldException, IllegalAccessException {
         Field field = list.getClass().getDeclaredField("array");
         field.setAccessible(true);
