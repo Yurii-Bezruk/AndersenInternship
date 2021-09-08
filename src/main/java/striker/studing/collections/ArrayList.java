@@ -43,10 +43,10 @@ public class ArrayList<E> implements List<E> {
         return false;
     }
 
-    //TODO
+
     @Override
     public Iterator<E> iterator() {
-        return null;
+        return new IteratorImpl();
     }
 
 
@@ -157,8 +157,8 @@ public class ArrayList<E> implements List<E> {
     @Override
     @SuppressWarnings("unchecked")
     public E get(int index) {
-        if (index >= size)
-            throw new ArrayIndexOutOfBoundsException();
+        if (index < 0 || index >= size)
+            throw new IndexOutOfBoundsException();
         return (E) array[index];
     }
 
@@ -171,8 +171,8 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public void add(int index, E element) {
-        if (index >= size)
-            throw new ArrayIndexOutOfBoundsException();
+        if (index < 0 || index >= size)
+            throw new IndexOutOfBoundsException();
         ensureCapacity(size + 1);
         int numMoved = size - index;
         System.arraycopy(array, index, array, index + 1, numMoved);
@@ -183,9 +183,8 @@ public class ArrayList<E> implements List<E> {
     @Override
     @SuppressWarnings("unchecked")
     public E remove(int index) {
-        if(index >= size){
-            throw new ArrayIndexOutOfBoundsException();
-        }
+        if(index < 0 || index >= size)
+            throw new IndexOutOfBoundsException();
         int numMoved = size - index - 1;
         E element = (E) array[index];
         System.arraycopy(array, index + 1, array, index, numMoved);
@@ -213,12 +212,12 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public ListIterator<E> listIterator() {
-        return null;
+        return new ListIteratorImpl();
     }
 
     @Override
     public ListIterator<E> listIterator(int index) {
-        return null;
+        return new ListIteratorImpl(index);
     }
 
     @Override
@@ -227,5 +226,85 @@ public class ArrayList<E> implements List<E> {
         subList.array = Arrays.copyOfRange(array, fromIndex, toIndex);
         subList.size = subList.array.length;
         return subList;
+    }
+    private class IteratorImpl implements Iterator<E> {
+        int cursor;
+        boolean operated;
+        int operatedIndex;
+
+        @Override
+        public boolean hasNext() {
+            return cursor < size;
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public E next() {
+            if(cursor >= size)
+                throw new IndexOutOfBoundsException();
+            operated = true;
+            operatedIndex = cursor;
+            return (E) array[cursor++];
+        }
+
+        @Override
+        public void remove() {
+            if(! operated)
+                throw new IllegalStateException();
+            operated = false;
+            ArrayList.this.remove(operatedIndex);
+        }
+    }
+    private class ListIteratorImpl extends IteratorImpl implements ListIterator<E> {
+        public ListIteratorImpl() {
+            this(0);
+        }
+
+        public ListIteratorImpl(int index) {
+            if(index < 0 || index > size)
+                throw new IndexOutOfBoundsException();
+            cursor = index;
+        }
+
+        @Override
+        public boolean hasPrevious() {
+            return cursor >= 0;
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public E previous() {
+            if(cursor < 0 || cursor == size)
+                throw new IndexOutOfBoundsException();
+            operated = true;
+            operatedIndex = cursor;
+            return (E) array[cursor--];
+        }
+
+        @Override
+        public int nextIndex() {
+            return cursor;
+        }
+
+        @Override
+        public int previousIndex() {
+            return cursor;
+        }
+
+        @Override
+        public void set(E e) {
+            if(! operated)
+                throw new IllegalStateException();
+            operated = false;
+            ArrayList.this.set(operatedIndex, e);
+        }
+
+        @Override
+        public void add(E e) {
+            if(! operated)
+                throw new IllegalStateException();
+            operated = false;
+            ArrayList.this.add(operatedIndex, e);
+        }
     }
 }

@@ -4,10 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -110,10 +107,15 @@ public class ArrayListTest {
         Assert.assertEquals(startSize - 1, list.size());
         Assert.assertFalse(list.contains(4));
     }
-    @Test(expected = ArrayIndexOutOfBoundsException.class)
+    @Test(expected = IndexOutOfBoundsException.class)
     public void removeByIndexTestIfIndexIsOutOfBounds() {
         List<Integer> list = new ArrayList<>();
         list.remove(0);
+    }
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void removeByIndexTestIfIndexLessThanZero() {
+        List<Integer> list = new ArrayList<>();
+        list.remove(-1);
     }
     @Test
     public void removeByObjectTest() {
@@ -212,10 +214,15 @@ public class ArrayListTest {
         list.add(testString);
         Assert.assertEquals(testString, list.get(0));
     }
-    @Test(expected = ArrayIndexOutOfBoundsException.class)
+    @Test(expected = IndexOutOfBoundsException.class)
     public void getTestIfIndexOutOfBounds() {
         List<String> list = new ArrayList<>();
         list.get(0);
+    }
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void getTestIfIndexLessThanZero() {
+        List<String> list = new ArrayList<>();
+        list.get(-1);
     }
     @Test
     public void setTest() {
@@ -236,10 +243,15 @@ public class ArrayListTest {
         Assert.assertEquals(another, list.get(0));
         Assert.assertEquals(testString, list.get(1));
     }
-    @Test(expected = ArrayIndexOutOfBoundsException.class)
+    @Test(expected = IndexOutOfBoundsException.class)
     public void addTestIfIndexOutOfBounds() {
         List<String> list = new ArrayList<>();
         list.add(0, "another");
+    }
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void addByIndexTestIfIndexLessThanZero() {
+        List<String> list = new ArrayList<>();
+        list.add(-1, "another");
     }
     @Test
     public void removeAllTest() {
@@ -316,6 +328,163 @@ public class ArrayListTest {
         Assert.assertEquals(2, subList.size());
         Assert.assertEquals(testSrt1, subList.get(0));
         Assert.assertEquals(testSrt2, subList.get(1));
+    }
+    @Test
+    public void iteratorTest() {
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        int sum = 0;
+        for (Integer elem : list) {
+            sum += elem;
+        }
+        Assert.assertEquals(6, sum);
+    }
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void iteratorTestNextIfCursorInTheEndOfList() {
+        List<Integer> list = new ArrayList<>();
+        list.iterator().next();
+    }
+    @Test
+    public void iteratorRemoveTest() {
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        Iterator<Integer> iterator = list.iterator();
+        iterator.next();
+        iterator.remove();
+        int sum = 0;
+        for (Integer elem : list) {
+            sum += elem;
+        }
+        Assert.assertEquals(5, sum);
+    }
+    @Test(expected = IllegalStateException.class)
+    public void iteratorRemoveWithoutNextTest() {
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        Iterator<Integer> iterator = list.iterator();
+        iterator.remove();
+    }
+    @Test
+    public void listIteratorTestCreating() {
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(-2);
+        list.add(19);
+        list.add(0);
+        int sum = 0;
+        ListIterator<Integer> iterator = list.listIterator();
+        while (iterator.hasNext()){
+            sum += iterator.next();
+        }
+        Assert.assertEquals(18, sum);
+    }
+    @Test
+    public void listIteratorTestCreatingWithGivenIndex() {
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(-2);
+        list.add(19);
+        list.add(0);
+        int sum = 0;
+        ListIterator<Integer> iterator = list.listIterator(1);
+        while (iterator.hasNext()){
+            sum += iterator.next();
+        }
+        Assert.assertEquals(17, sum);
+    }
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void listIteratorTestCreatingWithGivenIndexIfIndexOutOfBounds() {
+        List<Integer> list = new ArrayList<>();
+        ListIterator<Integer> iterator = list.listIterator(1);
+    }
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void listIteratorTestCreatingWithGivenIndexIfIndexLessThanZero() {
+        List<Integer> list = new ArrayList<>();
+        ListIterator<Integer> iterator = list.listIterator(-1);
+    }
+    @Test
+    public void listIteratorTestReverseOrder() {
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(-2);
+        list.add(19);
+        list.add(3);
+        int sum = 0;
+        ListIterator<Integer> iterator = list.listIterator(3);
+        while (iterator.hasPrevious()){
+            sum += iterator.previous();
+        }
+        Assert.assertEquals(21, sum);
+    }
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void listIteratorTestReverseOrderIfInTheZeroPosition() {
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        ListIterator<Integer> iterator = list.listIterator();
+        iterator.previous();
+        iterator.previous();
+    }
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void listIteratorTestReverseOrderIfInTheBeginningOfTheList() {
+        List<Integer> list = new ArrayList<>();
+        list.listIterator().previous();
+    }
+    @Test
+    public void listIteratorTestNextIndex() {
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(-2);
+        int sum = 0;
+        ListIterator<Integer> iterator = list.listIterator();
+        iterator.next();
+        Assert.assertEquals(1, iterator.nextIndex());
+    }
+    @Test
+    public void listIteratorTestPreviousIndex() {
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(-2);
+        int sum = 0;
+        ListIterator<Integer> iterator = list.listIterator(1);
+        iterator.previous();
+        Assert.assertEquals(0, iterator.previousIndex());
+    }
+    @Test
+    public void listIteratorTestSet() {
+        List<String> list = new ArrayList<>();
+        list.add("test");
+        ListIterator<String> iterator = list.listIterator();
+        iterator.next();
+        String expectedElem = "another";
+        iterator.set(expectedElem);
+        Assert.assertEquals(expectedElem, list.get(0));
+    }
+    @Test(expected = IllegalStateException.class)
+    public void listIteratorTestSetWithoutNextOrPrevious() {
+        List<String> list = new ArrayList<>();
+        list.listIterator().set("");
+    }
+    @Test
+    public void listIteratorTestAdd() {
+        List<String> list = new ArrayList<>();
+        list.add("test");
+        ListIterator<String> iterator = list.listIterator();
+        iterator.next();
+        String expectedElem = "another";
+        iterator.add(expectedElem);
+        Assert.assertEquals(2, list.size());
+        Assert.assertEquals(expectedElem, list.get(0));
+    }
+    @Test(expected = IllegalStateException.class)
+    public void listIteratorTestAddWithoutNextOrPrevious() {
+        List<String> list = new ArrayList<>();
+        list.listIterator().add("");
     }
     private int getListCapacity(List<?> list) throws NoSuchFieldException, IllegalAccessException {
         Field field = list.getClass().getDeclaredField("array");
