@@ -2,13 +2,16 @@ package striker.studing.collections;
 
 import java.util.*;
 
-public class LinkedList<E> implements List<E> {
+public class LinkedList<E> implements List<E>, Cloneable {
     private Node<E> head;
     private Node<E> tail;
     private int size;
 
     public LinkedList() {
 
+    }
+    public LinkedList(Collection<? extends E> collection) {
+        addAll(collection);
     }
 
     @Override
@@ -60,19 +63,19 @@ public class LinkedList<E> implements List<E> {
     public boolean add(E e) {
         if(head == null){
             head = new Node<>(e, null, null);
-            size++;
         }
         else if(size == 1){
             tail = new Node<>(e, head, head);
-            size++;
+            head.next = tail;
+            head.previous = tail;
         }
         else {
-            Node<E> newNode = new Node<>(e, tail, head);
+            Node<E> newNode = new Node<>(e, head, tail);
             head.previous = newNode;
             tail.next = newNode;
             tail = newNode;
-            size++;
         }
+        size++;
         return true;
     }
     @Override
@@ -88,13 +91,25 @@ public class LinkedList<E> implements List<E> {
         return false;
     }
     private E removeNode(Node<E> node){
-        Node<E> prev = node.previous;
-        Node<E> next = node.next;
-        prev.next = next;
-        next.previous = prev;
-        node.previous = null;
-        node.next = null;
-        size--;
+        if(size == 1){
+            head = null;
+            size = 0;
+        }
+        else {
+            Node<E> prev = node.previous;
+            Node<E> next = node.next;
+            prev.next = next;
+            next.previous = prev;
+            node.previous = null;
+            node.next = null;
+            size--;
+            if(node == head){
+                head = next;
+            }
+            if(node == tail){
+                tail = prev;
+            }
+        }
         return node.data;
     }
     @Override
@@ -117,7 +132,7 @@ public class LinkedList<E> implements List<E> {
         if(index < 0 || index >= size)
             throw new IndexOutOfBoundsException();
         Node<E> cursor = head;
-        for (int i = 0; i <= index; i++) {
+        for (int i = 0; i < index; i++) {
             cursor = cursor.next;
         }
         return cursor;
@@ -127,7 +142,6 @@ public class LinkedList<E> implements List<E> {
         Node<E> onIndex = getNodeByIndex(index);
         for (E elem : c) {
             add(onIndex, elem);
-            onIndex = onIndex.next;
         }
         return true;
     }
@@ -163,6 +177,21 @@ public class LinkedList<E> implements List<E> {
     public void clear() {
         head = null;
         tail = null;
+        size = 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LinkedList<?> that = (LinkedList<?>) o;
+        return size == that.size &&
+                Objects.equals(head, that.head);
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
     @Override
     public E get(int index) {
@@ -180,10 +209,18 @@ public class LinkedList<E> implements List<E> {
         add(getNodeByIndex(index), element);
     }
     private void add(Node<E> onIndex, E element) {
-        Node<E> previous = onIndex.previous;
-        Node<E> newNode = new Node<>(element, previous, onIndex);
-        previous.next = newNode;
-        onIndex.previous = newNode;
+        if(size == 1){
+            tail = onIndex;
+            head = new Node<>(element, tail, tail);
+            tail.previous = head;
+            tail.next = head;
+        }
+        else {
+            Node<E> previous = onIndex.previous;
+            Node<E> newNode = new Node<>(element, previous, onIndex);
+            previous.next = newNode;
+            onIndex.previous = newNode;
+        }
         size++;
     }
     @Override
@@ -246,7 +283,19 @@ public class LinkedList<E> implements List<E> {
         subList.size = count;
         return subList;
     }
-    static class Node<E> {
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder("[");
+        Iterator<E> iterator = iterator();
+        while (iterator.hasNext()){
+            builder.append(iterator.next()).append(",");
+        }
+        builder.append("]");
+        return builder.toString();
+    }
+
+    private static class Node<E> {
         E data;
         Node<E> next;
         Node<E> previous;
@@ -256,11 +305,21 @@ public class LinkedList<E> implements List<E> {
             this.next = next;
             this.previous = previous;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Node<?> node = (Node<?>) o;
+            return Objects.equals(data, node.data) &&
+                    Objects.equals(next, node.next) &&
+                    Objects.equals(previous, node.previous);
+        }
     }
-    class IteratorImpl implements Iterator<E> {
+    private class IteratorImpl implements Iterator<E> {
         Node<E> cursor = head;
         int cursorIndex;
-        boolean operated = true;
+        boolean operated;
         Node<E> operatedNode;
 
         @Override
@@ -276,7 +335,7 @@ public class LinkedList<E> implements List<E> {
             operatedNode = cursor;
             cursor = cursor.next;
             cursorIndex++;
-            return cursor.data;
+            return operatedNode.data;
         }
         @Override
         public void remove() {
@@ -285,7 +344,7 @@ public class LinkedList<E> implements List<E> {
             LinkedList.this.removeNode(operatedNode);
         }
     }
-    class ListIteratorImpl extends IteratorImpl implements ListIterator<E> {
+    private class ListIteratorImpl extends IteratorImpl implements ListIterator<E> {
 
         public ListIteratorImpl() {
 
@@ -303,13 +362,13 @@ public class LinkedList<E> implements List<E> {
 
         @Override
         public E previous() {
-            if(cursorIndex < 0)
+            if(cursorIndex < 0 || cursor == null)
                 throw new IndexOutOfBoundsException();
             operated = true;
             operatedNode = cursor;
             cursor = cursor.previous;
             cursorIndex--;
-            return cursor.data;
+            return operatedNode.data;
         }
 
         @Override
