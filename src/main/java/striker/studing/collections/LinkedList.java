@@ -2,7 +2,7 @@ package striker.studing.collections;
 
 import java.util.*;
 
-public class LinkedList<E> implements List<E>, Cloneable {
+public class LinkedList<E> implements List<E>, Deque<E>, Cloneable {
     private Node<E> head;
     private Node<E> tail;
     private int size;
@@ -37,6 +37,12 @@ public class LinkedList<E> implements List<E>, Cloneable {
     public Iterator<E> iterator() {
         return new IteratorImpl();
     }
+
+    @Override
+    public Iterator<E> descendingIterator() {
+        return new DescendingIteratorImpl();
+    }
+
     @Override
     public Object[] toArray() {
         Object[] arr = new Object[size];
@@ -60,6 +66,92 @@ public class LinkedList<E> implements List<E>, Cloneable {
     }
 
     @Override
+    public void addFirst(E e) {
+        add(0, e);
+    }
+
+    @Override
+    public void addLast(E e) {
+        add(e);
+    }
+
+    @Override
+    public boolean offerFirst(E e) {
+        add(0, e);
+        return true;
+    }
+
+    @Override
+    public boolean offerLast(E e) {
+        add(e);
+        return true;
+    }
+
+    @Override
+    public E removeFirst() {
+        E data = head.data;
+        removeNode(head);
+        return data;
+    }
+
+    @Override
+    public E removeLast() {
+        E data = tail.data;
+        removeNode(tail);
+        return data;
+    }
+
+    @Override
+    public E pollFirst() {
+        E data = head.data;
+        removeNode(head);
+        return data;
+    }
+
+    @Override
+    public E pollLast() {
+        E data = tail.data;
+        removeNode(tail);
+        return data;
+    }
+
+    @Override
+    public E getFirst() {
+        return head.data;
+    }
+
+    @Override
+    public E getLast() {
+        if(tail == null){
+            return head.data;
+        }
+        return tail.data;
+    }
+
+    @Override
+    public E peekFirst() {
+        return head.data;
+    }
+
+    @Override
+    public E peekLast() {
+        if(tail == null){
+            return head.data;
+        }
+        return tail.data;
+    }
+
+    @Override
+    public boolean removeFirstOccurrence(Object o) {
+        return remove(o);
+    }
+    @Override
+    public boolean removeLastOccurrence(Object o) {
+        remove(lastIndexOf(o));
+        return true;
+    }
+
+    @Override
     public boolean add(E e) {
         if(head == null){
             head = new Node<>(e, null, null);
@@ -78,6 +170,42 @@ public class LinkedList<E> implements List<E>, Cloneable {
         size++;
         return true;
     }
+
+    @Override
+    public boolean offer(E e) {
+        return offerLast(e);
+    }
+
+    @Override
+    public E remove() {
+        return removeFirst();
+    }
+
+    @Override
+    public E poll() {
+        return removeFirst();
+    }
+
+    @Override
+    public E element() {
+        return peekFirst();
+    }
+
+    @Override
+    public E peek() {
+        return peekFirst();
+    }
+
+    @Override
+    public void push(E e) {
+        addFirst(e);
+    }
+
+    @Override
+    public E pop() {
+        return removeFirst();
+    }
+
     @Override
     public boolean remove(Object o) {
         Node<E> cursor = head;
@@ -284,17 +412,6 @@ public class LinkedList<E> implements List<E>, Cloneable {
         return subList;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder("[");
-        Iterator<E> iterator = iterator();
-        while (iterator.hasNext()){
-            builder.append(iterator.next()).append(",");
-        }
-        builder.append("]");
-        return builder.toString();
-    }
-
     private static class Node<E> {
         E data;
         Node<E> next;
@@ -395,6 +512,24 @@ public class LinkedList<E> implements List<E>, Cloneable {
                 throw new IllegalStateException();
             operated = false;
             LinkedList.this.add(cursorIndex - 1, e);
+        }
+    }
+    private class DescendingIteratorImpl implements Iterator<E> {
+        ListIterator<E> iterator = new ListIteratorImpl(size - 1);
+
+        @Override
+        public boolean hasNext() {
+            return iterator.hasPrevious();
+        }
+
+        @Override
+        public E next() {
+            return iterator.previous();
+        }
+
+        @Override
+        public void remove() {
+            iterator.remove();
         }
     }
 }
