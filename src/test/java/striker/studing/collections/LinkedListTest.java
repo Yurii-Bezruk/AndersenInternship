@@ -487,4 +487,226 @@ public class LinkedListTest {
         Assert.assertFalse(list.equals(anotherTailList));
         Assert.assertTrue(list.equals(cloneList));
     }
+    @Test
+    public void descendingIteratorTest() {
+        LinkedList<String> list = new LinkedList<>();
+        list.add("test");
+        list.add("test2");
+        list.add("test3");
+        Iterator<String> iterator = list.descendingIterator();
+        for (int i = list.size() - 1; i >= 0 && iterator.hasNext(); i--) {
+            Assert.assertEquals(list.get(i), iterator.next());
+        }
+    }
+    @Test
+    public void descendingIteratorTestRemove() {
+        LinkedList<String> list = new LinkedList<>();
+        list.add("test");
+        list.add("test2");
+        list.add("test3");
+        Iterator<String> iterator = list.descendingIterator();
+        iterator.next();
+        iterator.remove();
+        Assert.assertEquals(2, list.size());
+        Assert.assertFalse(list.contains("test3"));
+    }
+    @Test
+    public void addFirstTest() {
+        LinkedList<String> list = new LinkedList<>();
+        list.addFirst("test");
+        list.addFirst("test2");
+        list.addFirst("test3");
+        Assert.assertEquals(3, list.size());
+        Assert.assertEquals("test3", list.get(0));
+    }
+    @Test
+    public void addLastTest() {
+        LinkedList<String> list = new LinkedList<>();
+        list.addLast("test");
+        list.addLast("test2");
+        list.addLast("test3");
+        Assert.assertEquals(3, list.size());
+        Assert.assertEquals("test3", list.get(2));
+    }
+    @Test
+    public void offerFirstTest() {
+        LinkedList<String> list = new LinkedList<>();
+        Assert.assertTrue(list.offerFirst("test"));
+        Assert.assertTrue(list.offerFirst("test2"));
+        Assert.assertTrue(list.offerFirst("test3"));
+        Assert.assertEquals(3, list.size());
+        Assert.assertEquals("test3", list.get(0));
+    }
+    @Test
+    public void offerLastTest() {
+        LinkedList<String> list = new LinkedList<>();
+        Assert.assertTrue(list.offerLast("test"));
+        Assert.assertTrue(list.offerLast("test2"));
+        Assert.assertTrue(list.offerLast("test3"));
+        Assert.assertEquals(3, list.size());
+        Assert.assertEquals("test3", list.get(2));
+    }
+    @Test
+    public void removeFirstTest() {
+        LinkedList<String> list = new LinkedList<>();
+        list.addLast("test");
+        list.addLast("test2");
+        list.addLast("test3");
+        Assert.assertEquals("test", list.removeFirst());
+        Assert.assertEquals("test2", list.removeFirst());
+        Assert.assertEquals("test3", list.removeFirst());
+        Assert.assertEquals(0, list.size());
+    }
+    @Test
+    public void removeLastTest() {
+        LinkedList<String> list = new LinkedList<>();
+        list.addLast("test");
+        list.addLast("test2");
+        list.addLast("test3");
+        Assert.assertEquals("test3", list.removeLast());
+        Assert.assertEquals("test2", list.removeLast());
+        Assert.assertEquals("test", list.removeLast());
+        Assert.assertEquals(0, list.size());
+    }
+    @Test
+    public void pollFirstTest() {
+        LinkedList<String> list = new LinkedList<>();
+        list.addLast("test");
+        list.addLast("test2");
+        list.addLast("test3");
+        Assert.assertEquals("test", list.pollFirst());
+        Assert.assertEquals("test2", list.pollFirst());
+        Assert.assertEquals("test3", list.pollFirst());
+        Assert.assertNull(list.pollFirst());
+        Assert.assertEquals(0, list.size());
+    }
+    @Test
+    public void pollLastTest() {
+        LinkedList<String> list = new LinkedList<>();
+        list.addLast("test");
+        list.addLast("test2");
+        list.addLast("test3");
+        Assert.assertEquals("test3", list.pollLast());
+        Assert.assertEquals("test2", list.pollLast());
+        Assert.assertEquals("test", list.pollLast());
+        Assert.assertNull(list.pollLast());
+        Assert.assertEquals(0, list.size());
+    }
+    @Test
+    public void getFirstTest() {
+        LinkedList<String> list = new LinkedList<>();
+        list.addLast("test");
+        Assert.assertEquals("test", list.getFirst());
+        Assert.assertEquals(1, list.size());
+    }
+    @Test
+    public void getLastTest() {
+        LinkedList<String> list = new LinkedList<>();
+        list.addLast("test");
+        list.addLast("test2");
+        Assert.assertEquals("test2", list.getLast());
+        Assert.assertEquals(2, list.size());
+    }
+    @Test
+    public void getLastTestIfOneElem() {
+        LinkedList<String> list = new LinkedList<>();
+        list.addLast("test");
+        Assert.assertEquals("test", list.getLast());
+        Assert.assertEquals(1, list.size());
+    }
+    @Test
+    public void peekFirstTest() {
+        LinkedList<String> list = new LinkedList<>();
+        list.addLast("test");
+        Assert.assertEquals("test", list.peekFirst());
+        Assert.assertEquals(1, list.size());
+    }
+    @Test
+    public void peekFirstTestIfEmptyList() {
+        LinkedList<String> list = new LinkedList<>();
+        Assert.assertNull(list.peekFirst());
+    }
+    @Test
+    public void peekLastTest() {
+        LinkedList<String> list = new LinkedList<>();
+        list.addLast("test");
+        list.addLast("test2");
+        Assert.assertEquals("test2", list.peekLast());
+        Assert.assertEquals(2, list.size());
+    }
+    @Test
+    public void peekLastTestIfEmptyList() {
+        LinkedList<String> list = new LinkedList<>();
+        Assert.assertNull(list.peekLast());
+    }
+    @Test
+    public void peekLastTestIfOneElem() {
+        LinkedList<String> list = new LinkedList<>();
+        list.addLast("test");
+        Assert.assertEquals("test", list.peekLast());
+        Assert.assertEquals(1, list.size());
+    }
+    @Test
+    public void removeFirstOccurrenceTest() {
+        LinkedList<String> list = new LinkedList<>();
+        list.add("test");
+        list.add("test2");
+        list.add("test");
+        Assert.assertTrue(list.removeFirstOccurrence("test"));
+        Assert.assertNotEquals("test", list.get(0));
+        Assert.assertNotEquals(3, list.size());
+        Assert.assertTrue(list.contains("test"));
+    }
+    @Test
+    public void removeLastOccurrenceTest() {
+        LinkedList<String> list = new LinkedList<>();
+        list.add("test");
+        list.add("test2");
+        list.add("test");
+        Assert.assertTrue(list.removeLastOccurrence("test"));
+        Assert.assertEquals("test", list.get(0));
+        Assert.assertNotEquals(3, list.size());
+        Assert.assertTrue(list.contains("test"));
+    }
+    @Test
+    public void offerTest(){
+        LinkedList<String> list = new LinkedList<>();
+        Assert.assertTrue(list.offer("test"));
+        Assert.assertTrue(list.contains("test"));
+    }
+    @Test
+    public void removeWithoutArgsTest(){
+        LinkedList<String> list = new LinkedList<>();
+        list.add("test");
+        Assert.assertEquals("test", list.remove());
+        Assert.assertFalse(list.contains("test"));
+    }
+    @Test
+    public void pollTest(){
+        LinkedList<String> list = new LinkedList<>();
+        list.add("test");
+        Assert.assertEquals("test", list.poll());
+        Assert.assertFalse(list.contains("test"));
+    }
+    @Test
+    public void peekTest(){
+        LinkedList<String> list = new LinkedList<>();
+        list.add("test");
+        Assert.assertEquals("test", list.peek());
+        Assert.assertTrue(list.contains("test"));
+    }
+    @Test
+    public void elementTest(){
+        LinkedList<String> list = new LinkedList<>();
+        list.add("test");
+        Assert.assertEquals("test", list.element());
+        Assert.assertTrue(list.contains("test"));
+    }
+    @Test
+    public void pushAndPopTest(){
+        LinkedList<String> list = new LinkedList<>();
+        list.push("test");
+        Assert.assertEquals("test", list.pop());
+        Assert.assertFalse(list.contains("test"));
+    }
 }

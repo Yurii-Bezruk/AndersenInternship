@@ -67,7 +67,12 @@ public class LinkedList<E> implements List<E>, Deque<E>, Cloneable {
 
     @Override
     public void addFirst(E e) {
-        add(0, e);
+        if(size == 0){
+            add(e);
+        }
+        else {
+            add(0, e);
+        }
     }
 
     @Override
@@ -77,7 +82,7 @@ public class LinkedList<E> implements List<E>, Deque<E>, Cloneable {
 
     @Override
     public boolean offerFirst(E e) {
-        add(0, e);
+        addFirst(e);
         return true;
     }
 
@@ -103,6 +108,8 @@ public class LinkedList<E> implements List<E>, Deque<E>, Cloneable {
 
     @Override
     public E pollFirst() {
+        if(size == 0)
+            return null;
         E data = head.data;
         removeNode(head);
         return data;
@@ -110,6 +117,8 @@ public class LinkedList<E> implements List<E>, Deque<E>, Cloneable {
 
     @Override
     public E pollLast() {
+        if(size == 0)
+            return null;
         E data = tail.data;
         removeNode(tail);
         return data;
@@ -130,11 +139,16 @@ public class LinkedList<E> implements List<E>, Deque<E>, Cloneable {
 
     @Override
     public E peekFirst() {
+        if(size == 0)
+            return null;
         return head.data;
     }
 
     @Override
     public E peekLast() {
+        if(size == 0){
+            return null;
+        }
         if(tail == null){
             return head.data;
         }
@@ -345,9 +359,12 @@ public class LinkedList<E> implements List<E>, Deque<E>, Cloneable {
         }
         else {
             Node<E> previous = onIndex.previous;
-            Node<E> newNode = new Node<>(element, previous, onIndex);
+            Node<E> newNode = new Node<>(element, onIndex, previous);
             previous.next = newNode;
             onIndex.previous = newNode;
+            if(onIndex == head){
+                head = newNode;
+            }
         }
         size++;
     }
