@@ -1,6 +1,7 @@
 package striker.studing.collections;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class HashMap<K, V> implements Map<K, V> {
     private static final int DEFAULT_CAPACITY = 16;
@@ -15,10 +16,11 @@ public class HashMap<K, V> implements Map<K, V> {
     public HashMap() {
         this(DEFAULT_CAPACITY, DEFAULT_LOAD_FACTOR);
     }
-    //TODO
-//    public HashMap(Map<? extends K, ? extends V> map) {
-//
-//    }
+
+    public HashMap(Map<? extends K, ? extends V> map) {
+        this();
+        putAll(map);
+    }
     public HashMap(int initialCapacity) {
         this(initialCapacity, DEFAULT_LOAD_FACTOR);
     }
@@ -159,22 +161,25 @@ public class HashMap<K, V> implements Map<K, V> {
 
     @Override
     public void putAll(Map<? extends K, ? extends V> m) {
-
+        for (Entry<? extends K, ? extends V> entry : m.entrySet()) {
+            put(entry.getKey(), entry.getValue());
+        }
     }
 
     @Override
     public void clear() {
-
+        Arrays.fill(buckets, null);
+        size = 0;
     }
 
     @Override
     public Set<K> keySet() {
-        return null;
+        return entrySet.stream().map(Entry::getKey).collect(Collectors.toSet());
     }
 
     @Override
     public Collection<V> values() {
-        return null;
+        return entrySet.stream().map(Entry::getValue).collect(Collectors.toList());
     }
 
     @Override

@@ -4,7 +4,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 public class HashMapTest {
 
@@ -43,6 +45,17 @@ public class HashMapTest {
         loadFactor.setAccessible(true);
         Assert.assertEquals(expectedCapacity, ((Object[]) buckets.get(map)).length);
         Assert.assertEquals(expectedLoadFactor, loadFactor.get(map));
+    }
+    @Test
+    public void constructorWithOtherMapTest() {
+        Map<Integer, String> map = new HashMap<>();
+        map.put(1, "1");
+        map.put(2, "two");
+        Map<Integer, String> map2 = new HashMap<>(map);
+        Assert.assertTrue(map2.containsKey(1));
+        Assert.assertTrue(map2.containsKey(2));
+        Assert.assertTrue(map2.containsValue("1"));
+        Assert.assertTrue(map2.containsValue("two"));
     }
     @Test
     public void putTest() {
@@ -135,6 +148,46 @@ public class HashMapTest {
         Assert.assertEquals("1", map.remove(new EqualsTest(1)));
         Assert.assertEquals("5", map.remove(new EqualsTest(4)));
         Assert.assertNull(map.remove(new EqualsTest(6)));
+    }
+    @Test
+    public void putAllTest() {
+        Map<Integer, String> map = new HashMap<>();
+        map.put(1, "1");
+        map.put(2, "two");
+        Map<Integer, String> map2 = new HashMap<>();
+        map2.putAll(map);
+        Assert.assertTrue(map2.containsKey(1));
+        Assert.assertTrue(map2.containsKey(2));
+        Assert.assertTrue(map2.containsValue("1"));
+        Assert.assertTrue(map2.containsValue("two"));
+    }
+    @Test
+    public void clearTest() {
+        Map<Integer, String> map = new HashMap<>();
+        map.put(1, "1");
+        map.put(2, "two");
+        map.clear();
+        Assert.assertTrue(map.isEmpty());
+    }
+    @Test
+    public void keySetTest() {
+        Map<Integer, String> map = new HashMap<>();
+        map.put(1, "1");
+        map.put(2, "two");
+        Set<Integer> set = map.keySet();
+        Assert.assertTrue(set.contains(1));
+        Assert.assertTrue(set.contains(2));
+        Assert.assertEquals(2, set.size());
+    }
+    @Test
+    public void valuesTest() {
+        Map<Integer, String> map = new HashMap<>();
+        map.put(1, "1");
+        map.put(2, "two");
+        Collection<String> values = map.values();
+        Assert.assertTrue(values.contains("1"));
+        Assert.assertTrue(values.contains("two"));
+        Assert.assertEquals(2, values.size());
     }
     private class EqualsTest {
         int equals;
