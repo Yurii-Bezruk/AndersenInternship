@@ -55,25 +55,11 @@ public class HashMapTest {
     @Test
     public void putIntoBucketTest() {
         Map<Object, String> map = new HashMap<>();
-        class Test {
-            int equals;
-            public Test(int equals) {
-                this.equals = equals;
-            }
-            @Override
-            public boolean equals(Object o) {
-                return equals == ((Test) o).equals;
-            }
-            @Override
-            public int hashCode() {
-                return 1;
-            }
-        }
-        map.put(new Test(1), "1");
-        map.put(new Test(3), "3");
-        map.put(new Test(2), "two");
-        map.put(new Test(2), "two");
-        map.put(new Test(3), "3");
+        map.put(new EqualsTest(1), "1");
+        map.put(new EqualsTest(3), "3");
+        map.put(new EqualsTest(2), "two");
+        map.put(new EqualsTest(2), "two");
+        map.put(new EqualsTest(3), "3");
         System.out.println(map);
         Assert.assertEquals(3, map.size());
     }
@@ -131,25 +117,37 @@ public class HashMapTest {
     @Test
     public void getTest() {
         Map<Object, String> map = new HashMap<>();
-        class Test {
-            int equals;
-            public Test(int equals) {
-                this.equals = equals;
-            }
-            @Override
-            public boolean equals(Object o) {
-                return equals == ((Test) o).equals;
-            }
-            @Override
-            public int hashCode() {
-                return 1;
-            }
-        }
-        map.put(new Test(1), "1");
-        map.put(new Test(2), "3");
-        map.put(new Test(3), "3");
+        map.put(new EqualsTest(1), "1");
+        map.put(new EqualsTest(2), "3");
+        map.put(new EqualsTest(3), "3");
         Assert.assertNull(map.get(10));
-        Assert.assertEquals("3", map.get(new Test(3)));
-        Assert.assertNull(map.get(new Test(4)));
+        Assert.assertEquals("3", map.get(new EqualsTest(3)));
+        Assert.assertNull(map.get(new EqualsTest(4)));
+    }
+    @Test
+    public void removeTest() {
+        Map<Object, String> map = new HashMap<>();
+        map.put(new EqualsTest(1), "1");
+        map.put(new EqualsTest(2), "3");
+        map.put(new EqualsTest(3), "3");
+        map.put(new EqualsTest(4), "5");
+        Assert.assertNull(map.remove(10));
+        Assert.assertEquals("1", map.remove(new EqualsTest(1)));
+        Assert.assertEquals("5", map.remove(new EqualsTest(4)));
+        Assert.assertNull(map.remove(new EqualsTest(6)));
+    }
+    private class EqualsTest {
+        int equals;
+        public EqualsTest(int equals) {
+            this.equals = equals;
+        }
+        @Override
+        public boolean equals(Object o) {
+            return equals == ((EqualsTest) o).equals;
+        }
+        @Override
+        public int hashCode() {
+            return 1;
+        }
     }
 }

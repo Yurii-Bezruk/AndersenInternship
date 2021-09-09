@@ -69,11 +69,6 @@ public class HashMap<K, V> implements Map<K, V> {
 
     @Override
     public V get(Object key) {
-        Node<K, V> node = findNode(key);
-        return node == null ? null : node.value;
-    }
-
-    private Node<K, V> findNode(Object key) {
         Node<K, V> bucket = buckets[(buckets.length - 1) & hash(key)];
         if(bucket == null){
             return null;
@@ -81,7 +76,7 @@ public class HashMap<K, V> implements Map<K, V> {
         Node<K, V> cursor = bucket;
         while (cursor != null){
             if(cursor.key.equals(key)){
-                return cursor;
+                return cursor.value;
             }
             cursor = cursor.next;
         }
@@ -140,8 +135,26 @@ public class HashMap<K, V> implements Map<K, V> {
 
     @Override
     public V remove(Object key) {
-        Node<K, V> node = findNode(key);
-        return node == null ? null : node.value;
+        int index = (buckets.length - 1) & hash(key);
+        Node<K, V> bucket = buckets[index];
+        if(bucket == null){
+            return null;
+        }
+        if(bucket.key.equals(key)){
+            V value = bucket.value;
+            buckets[index] = bucket.next;
+            return value;
+        }
+        Node<K, V> cursor = bucket;
+        while (cursor.next != null){
+            if(cursor.next.key.equals(key)){
+                V value = cursor.next.value;
+                cursor.next = cursor.next.next;
+                return value;
+            }
+            cursor = cursor.next;
+        }
+        return null;
     }
 
     @Override
