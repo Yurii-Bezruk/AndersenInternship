@@ -11,7 +11,7 @@ public class HashMap<K, V> implements Map<K, V> {
     private int size;
     private int threshold; //предел заполненности, требующий увеличения
     private final float loadFactor; //предельный коэффициент загруженности
-    private Set<Map.Entry<K, V>> entrySet;
+    private final Set<Map.Entry<K, V>> entrySet;
 
     public HashMap() {
         this(DEFAULT_CAPACITY, DEFAULT_LOAD_FACTOR);
