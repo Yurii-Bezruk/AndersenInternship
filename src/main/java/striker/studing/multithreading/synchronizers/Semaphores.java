@@ -1,17 +1,12 @@
-package striker.studing.multithreading;
+package striker.studing.multithreading.synchronizers;
 
 import striker.studing.collections.ArrayList;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
 public class Semaphores {
     public static final int BUFFER_SIZE = 5;
     public static List<Integer> buffer = new ArrayList<>();
-    //public static final Object monitor = new Object();
     public static final Semaphore semaphore = new Semaphore(1);
     public static final Semaphore emptyItems = new Semaphore(BUFFER_SIZE);
     public static final Semaphore fullItems = new Semaphore(0);

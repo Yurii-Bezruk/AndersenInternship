@@ -1,4 +1,4 @@
-package striker.studing.multithreading;
+package striker.studing.multithreading.synchronizers;
 
 import java.util.concurrent.CountDownLatch;
 

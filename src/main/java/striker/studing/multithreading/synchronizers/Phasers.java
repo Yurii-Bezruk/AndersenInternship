@@ -1,4 +1,4 @@
-package striker.studing.multithreading;
+package striker.studing.multithreading.synchronizers;
 
 import java.util.concurrent.Phaser;
 
@@ -28,7 +28,6 @@ public class Phasers {
         }).start();
         new Thread(r).start();
         new Thread(r).start();
-        //System.out.println(phaser.getUnarrivedParties());
 
     }
 }
