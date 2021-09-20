@@ -15,9 +15,9 @@ public class Main {
         object.addMethod("sum", (Integer... args) -> args[0] + args[1]);
         object.addMethod("printShoRomaPidor", args -> {
             System.out.println("Roma pidor");
-            return null;
         });
 
         System.out.println(object.invokeMethod("sum", 5, 8));
+        object.invokeMethod("printShoRomaPidor");
     }
 }

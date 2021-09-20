@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class DynamicObject {
     private final Map<String, DynamicMethod> methods = new HashMap<>();
@@ -27,5 +28,12 @@ public class DynamicObject {
     }
     public void addMethod(String name, DynamicMethod<?, ?> method){
         methods.put(name, method);
+    }
+    @SuppressWarnings("unchecked")
+    public <V> void addMethod(String name, Consumer method){
+        methods.put(name, args -> {
+            method.accept(args);
+            return null;
+        });
     }
 }
