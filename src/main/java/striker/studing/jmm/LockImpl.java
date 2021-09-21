@@ -4,24 +4,20 @@ public class LockImpl implements Lock{
     private boolean locked;
 
     @Override
-    public void lock() {
-        synchronized (this){
-            while (locked){
-                try {
-                    wait();
-                } catch (InterruptedException e) {
-                    return;
-                }
+    public synchronized void lock() {
+        while (locked){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                return;
             }
-            locked = true;
         }
+        locked = true;
     }
 
     @Override
-    public void unlock() {
-        synchronized (this) {
-            locked = false;
-            notifyAll();
-        }
+    public synchronized void unlock() {
+        locked = false;
+        notifyAll();
     }
 }

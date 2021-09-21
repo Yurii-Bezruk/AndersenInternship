@@ -1,18 +1,16 @@
 package striker.studing.jmm;
 
-import java.util.stream.Stream;
-
 public interface Lock {
-    void lock();
+    void lock() throws InterruptedException;
     void unlock();
 
     static void main(String[] args) throws InterruptedException {
         Lock lock = new LockImpl();
         int[] counter = new int[1];
         Runnable r = ()->{
-            lock.lock();
-            System.out.println("sync code " + Thread.currentThread().getName());
             try {
+                lock.lock();
+                System.out.println("sync code " + Thread.currentThread().getName());
                 Thread.sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
