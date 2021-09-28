@@ -3,11 +3,11 @@ package striker.studing.caching;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class CacheTest {
+public class LRUCacheTest {
 
     @Test
     public void removeByOldTest(){
-        Cache<String, Integer> cache = new Cache<>(5);
+        LRUCache<String, Integer> cache = new LRUCache<>(5);
         cache.put("one", 1);
         cache.put("two", 2);
         cache.put("three", 3);
@@ -21,7 +21,7 @@ public class CacheTest {
     }
     @Test
     public void getTest(){
-        Cache<String, Integer> cache = new Cache<>(3);
+        LRUCache<String, Integer> cache = new LRUCache<>(3);
         cache.put("one", 1);
         cache.put("two", 2);
         cache.put("three", 3);
@@ -33,11 +33,21 @@ public class CacheTest {
     }
     @Test
     public void removeTest(){
-        Cache<String, Integer> cache = new Cache<>(3);
+        LRUCache<String, Integer> cache = new LRUCache<>(3);
         cache.put("one", 1);
         cache.put("two", 2);
         cache.remove("two");
         Assert.assertEquals(1, cache.size());
         System.out.println(cache);
+    }
+
+    @Test
+    public void supplierTest(){
+        LRUCache<String, String> cache = new LRUCache<>(3, ()->"3");
+        cache.put("one", "1");
+        cache.put("two", "2");
+        Assert.assertEquals( "3", cache.get("three"));
+        Assert.assertEquals( "3", cache.get("four"));
+        Assert.assertEquals(4, cache.size());
     }
 }
