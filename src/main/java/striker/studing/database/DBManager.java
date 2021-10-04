@@ -10,19 +10,32 @@ public class DBManager {
     private static final String USER = "root";
     private static final String PASSWORD = "fastumgel";
 
-    public void s(){
-        try (Connection connection = DriverManager.
-                getConnection("jdbc:mysql://localhost:3306/sql_stream_test&serverTimeZone=UTC", "root", "fastumgel")){
-
-        } catch (SQLException throwables) {
+    public User createUser(User user){
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement statement = connection.prepareStatement(
+             "INSERT INTO user_with_dep(user_with_dep.name, department)" +
+                 "VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
+        ){
+            statement.setString(1, user.getName());
+            statement.setInt(2, user.getDepartment().getId());
+            statement.execute();
+            try(ResultSet resultSet = statement.getGeneratedKeys()){
+                while (resultSet.next()){
+                    user.setId(resultSet.getInt(1));
+                }
+            }
+        }
+        catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
+        return user;
     }
     public List<User> readUsers(){
         List<User> users = null;
-        try (ResultSet resultSet = executeStatement(
-           "SELECT user_with_dep.id, user_with_dep.name, department.id, department.name, country.id, country.name " +
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(
+             "SELECT user_with_dep.id, user_with_dep.name, department.id, department.name, country.id, country.name " +
                  "FROM user_with_dep " +
                  "INNER JOIN department ON user_with_dep.department = department.id " +
                  "INNER JOIN country ON department.country = country.id");
@@ -47,15 +60,20 @@ public class DBManager {
         }
         return users;
     }
-    private ResultSet executeStatement(String query){
-        ResultSet resultSet = null;
+    public void updateUser(User user){
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             Statement statement = connection.createStatement()){
-            resultSet = statement.executeQuery(query);
+             PreparedStatement statement = connection.prepareStatement(
+             "UPDATE user_with_dep " +
+                 "SET user_with_dep.name = ?, department = ? " +
+                 "WHERE id = ?;")
+        ){
+            statement.setString(1, user.getName());
+            statement.setInt(2, user.getDepartment().getId());
+            statement.setInt(3, user.getId());
+            statement.execute();
         }
-        catch (SQLException e){
-            e.printStackTrace();
+        catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
-        return resultSet;
     }
 }
