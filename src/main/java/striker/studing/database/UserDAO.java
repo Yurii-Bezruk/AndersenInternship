@@ -6,13 +6,10 @@ import java.sql.*;
 import java.util.List;
 
 public class UserDAO implements DAO<User>{
-    private static final String URL = "jdbc:mysql://localhost:3306/sql_stream_test?serverTimeZone=UTC";
-    private static final String USER = "root";
-    private static final String PASSWORD = "fastumgel";
 
     @Override
     public User create(User user){
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(
              "INSERT INTO user_with_dep(user_with_dep.name, department)" +
                  "VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
@@ -34,7 +31,7 @@ public class UserDAO implements DAO<User>{
     @Override
     public List<User> readAll(){
         List<User> users = null;
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (Connection connection = ConnectionPool.getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(
              "SELECT user_with_dep.id, user_with_dep.name, department.id, department.name, country.id, country.name " +
@@ -54,7 +51,7 @@ public class UserDAO implements DAO<User>{
     @Override
     public User read(long id){
         User user = null;
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(
          "SELECT user_with_dep.id, user_with_dep.name, department.id, department.name, country.id, country.name " +
              "FROM user_with_dep " +
@@ -90,7 +87,7 @@ public class UserDAO implements DAO<User>{
 
     @Override
     public void update(User user){
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(
              "UPDATE user_with_dep " +
                  "SET user_with_dep.name = ?, department = ? " +
@@ -107,7 +104,7 @@ public class UserDAO implements DAO<User>{
     }
     @Override
     public void delete(User user){
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(
              "DELETE FROM user_with_dep " +
                  "WHERE id = ?", Statement.RETURN_GENERATED_KEYS);
