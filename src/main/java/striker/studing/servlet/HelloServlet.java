@@ -31,10 +31,14 @@ public class HelloServlet implements Servlet {
         manager.readAll().forEach(user -> {
             Department department = user.getDepartment();
             Country country = department.getCountry();
-            System.out.printf("%d %s %d %s %d %s%n",
+            try {
+                servletResponse.getWriter().printf("%d %s %d %s %d %s%n",
                     user.getId(), user.getName(),
                     department.getId(), department.getName(),
                     country.getId(), country.getName());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
     }
 
