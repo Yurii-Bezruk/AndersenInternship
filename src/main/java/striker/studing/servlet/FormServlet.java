@@ -1,5 +1,6 @@
 package striker.studing.servlet;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
@@ -13,8 +14,10 @@ import java.io.PrintWriter;
 public class FormServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println(req.getQueryString());
-        resp.getWriter().print(req.getHttpServletMapping().getPattern());
+        final RequestDispatcher login = req.getRequestDispatcher("hello");
+        login.forward(req, resp);
+        resp.getWriter().print("after"); //<-- теряется
+        System.out.println("after"); //<-- но это будет выполнено
     }
 
     @Override
