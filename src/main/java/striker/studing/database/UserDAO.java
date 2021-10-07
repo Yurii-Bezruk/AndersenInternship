@@ -108,7 +108,7 @@ public class UserDAO implements DAO<User>{
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(
              "DELETE FROM user_with_dep " +
-                 "WHERE id = ?", Statement.RETURN_GENERATED_KEYS);
+                 "WHERE id = ?");
         ){
             statement.setLong(1, user.getId());
             statement.execute();
