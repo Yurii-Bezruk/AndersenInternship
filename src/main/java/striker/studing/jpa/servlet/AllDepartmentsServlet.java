@@ -19,7 +19,7 @@ public class AllDepartmentsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Department> departments = new DepartmentDAO().readAll();
         req.setAttribute("departments", departments);
-        getServletContext().getRequestDispatcher("/new-user.jsp")
+        getServletContext().getRequestDispatcher("/" + req.getParameter("redirect"))
             .forward(req, resp);
     }
 }

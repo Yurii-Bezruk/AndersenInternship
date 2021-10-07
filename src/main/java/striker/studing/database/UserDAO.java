@@ -37,7 +37,8 @@ public class UserDAO implements DAO<User>{
              "SELECT user_with_dep.id, user_with_dep.name, department.id, department.name, country.id, country.name " +
                  "FROM user_with_dep " +
                  "INNER JOIN department ON user_with_dep.department = department.id " +
-                 "INNER JOIN country ON department.country = country.id");
+                 "INNER JOIN country ON department.country = country.id " +
+                 "ORDER BY user_with_dep.id");
         ){
             users = new ArrayList<>();
             while (resultSet.next()){

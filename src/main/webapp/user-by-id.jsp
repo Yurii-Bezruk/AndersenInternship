@@ -11,5 +11,7 @@
     </form>
     User data: <br>
     ${user}
+    <br>
+    <a href="user-app.jsp">Back</a>
 </body>
 </html>

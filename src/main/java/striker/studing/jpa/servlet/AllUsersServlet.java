@@ -17,7 +17,7 @@ public class AllUsersServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<User> users = new UserDAO().readAll();
         req.setAttribute("users", users);
-        getServletContext().getRequestDispatcher("/all-users.jsp")
+        getServletContext().getRequestDispatcher("/" + req.getParameter("redirect"))
             .forward(req, resp);
     }
 }

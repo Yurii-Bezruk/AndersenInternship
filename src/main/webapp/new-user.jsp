@@ -1,4 +1,3 @@
-<%@ page import="striker.studing.database.DepartmentDAO" %>
 <%@ page pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html lang="en">
@@ -19,5 +18,6 @@
     <c:if test="${success}">
         User added.
     </c:if>
+    <br><a href="user-app.jsp">Back</a>
 </body>
 </html>
