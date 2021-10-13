@@ -1,0 +1,5 @@
+<tn:test xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="testNameSpace testSchema.xsd" xmlns:tn="testNameSpace">
+    <id>123</id>
+    <title>ASDF</title>
+</tn:test>
