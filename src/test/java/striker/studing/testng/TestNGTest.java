@@ -1,5 +1,6 @@
 package striker.studing.testng;
 
+import org.mockito.Mockito;
 import org.testng.annotations.*;
 
 public class TestNGTest {
@@ -36,6 +37,8 @@ public class TestNGTest {
     public void test3(String data){
         System.out.println("test3 "+data);
     }
+
+
 
     @DataProvider
     public Object[][] data(){
