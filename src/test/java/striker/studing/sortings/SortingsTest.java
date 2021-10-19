@@ -3,6 +3,9 @@ package striker.studing.sortings;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import striker.studing.caching.TwoQCacheTest;
 import striker.studing.sortings.Sortings;
 
 import java.util.Arrays;
